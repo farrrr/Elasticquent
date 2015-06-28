@@ -1,20 +1,23 @@
-<?php namespace Elasticquent;
+<?php
+
+namespace Elasticquent;
 
 interface ElasticquentInterface
 {
     /**
      * Get ElasticSearch Client
      *
-     * @return Elasticsearch\Client
+     * @return \Elasticsearch\Client
      */
     public function getElasticSearchClient();
 
     /**
      * New Collection
      *
+     * @param array $models
      * @return
      */
-    public function newCollection(array $models = array());
+    public function newCollection(array $models = []);
 
     /**
      * Get Index Name
@@ -47,8 +50,7 @@ interface ElasticquentInterface
     /**
      * Set Mapping Properties
      *
-     * @param   array $mappingProperties
-     * @return  void
+     * @param $mapping
      */
     public function setMappingProperties($mapping);
 
@@ -67,7 +69,6 @@ interface ElasticquentInterface
      *
      * Index all documents in an Eloquent model.
      *
-     * @param   array $columns
      * @return  void
      */
     public static function addAllToIndex();
@@ -76,9 +77,9 @@ interface ElasticquentInterface
      * Search a Type
      *
      *
-     * @return void
+     * @param array $query
      */
-    public static function search($query = array());
+    public static function search(array $query = []);
 
     /**
      * Add to Search Index

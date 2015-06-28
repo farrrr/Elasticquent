@@ -1,4 +1,6 @@
-<?php namespace Elasticquent;
+<?php
+
+namespace Elasticquent;
 
 /**
  * Elasticquent Collection Trait
@@ -49,7 +51,7 @@ trait ElasticquentCollectionTrait
     {
         $all = $this->all();
 
-        $params = array();
+        $params = [];
 
         foreach ($all as $item) {
 

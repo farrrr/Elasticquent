@@ -1,8 +1,10 @@
-<?php namespace Elasticquent;
+<?php
 
-class ElasticquentCollection extends \Illuminate\Database\Eloquent\Collection
+namespace Elasticquent;
+
+use Illuminate\Database\Eloquent\Collection;
+
+class ElasticquentCollection extends Collection
 {
-
     use ElasticquentCollectionTrait;
-
 }

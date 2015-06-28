@@ -1,7 +1,9 @@
-<?php namespace Elasticquent;
+<?php
 
-use \Elasticquent\ElasticquentCollection as ElasticquentCollection;
-use \Elasticquent\ElasticquentResultCollection as ResultCollection;
+namespace Elasticquent;
+
+use Elasticquent\ElasticquentResultCollection as ResultCollection;
+use Elasticsearch\Client as ElasticSearchClient;
 
 /**
  * Elasticquent Trait
@@ -54,13 +56,13 @@ trait ElasticquentTrait
      */
     public function getElasticSearchClient()
     {
-        $config = array();
+        $config = [];
 
         if (\Config::has('elasticquent.config')) {
             $config = \Config::get('elasticquent.config');
         }
 
-        return new \Elasticsearch\Client($config);
+        return new ElasticSearchClient($config);
     }
 
     /**
@@ -69,7 +71,7 @@ trait ElasticquentTrait
      * @param array $models
      * @return Collection
      */
-    public function newCollection(array $models = array())
+    public function newCollection(array $models = [])
     {
         return new ElasticquentCollection($models);
     }
@@ -210,7 +212,7 @@ trait ElasticquentTrait
     {
         $instance = new static;
 
-        $all = $instance->newQuery()->get(array('*'));
+        $all = $instance->newQuery()->get(['*']);
 
         return $all->addToIndex();
     }
@@ -224,7 +226,7 @@ trait ElasticquentTrait
     {
         $instance = new static;
 
-        $all = $instance->newQuery()->get(array('*'));
+        $all = $instance->newQuery()->get(['*']);
 
         return $all->reindex();
     }
@@ -239,7 +241,8 @@ trait ElasticquentTrait
      * @param   array $sourceFields
      * @param   int $limit
      * @param   int $offset
-     * @return  ResultCollection
+     * @param   null $sort
+     * @return ElasticquentResultCollection
      */
     public static function searchByQuery($query = null, $aggregations = null, $sourceFields = null, $limit = null, $offset = null, $sort = null)
     {
@@ -355,16 +358,16 @@ trait ElasticquentTrait
      */
     public function getBasicEsParams($getIdIfPossible = true, $getSourceIfPossible = false, $getTimestampIfPossible = false, $limit = null, $offset = null)
     {
-        $params = array(
+        $params = [
             'index'     => $this->getIndexName(),
             'type'      => $this->getTypeName()
-        );
+        ];
 
         if ($getIdIfPossible and $this->getKey()) {
             $params['id'] = $this->getKey();
         }
 
-        $fieldsParam = array();
+        $fieldsParam = [];
 
         if ($getSourceIfPossible) {
             array_push($fieldsParam, '_source');
@@ -429,10 +432,10 @@ trait ElasticquentTrait
 
         $mapping = $instance->getBasicEsParams();
 
-        $params = array(
-            '_source'       => array('enabled' => true),
+        $params = [
+            '_source'       => ['enabled' => true],
             'properties'    => $instance->getMappingProperties()
-        );
+        ];
 
         $mapping['body'][$instance->getTypeName()] = $params;
 
@@ -489,9 +492,9 @@ trait ElasticquentTrait
 
         $client = $instance->getElasticSearchClient();
 
-        $index = array(
+        $index = [
             'index'     => $instance->getIndexName()
-        );
+        ];
 
         if ($shards) {
             $index['body']['settings']['number_of_shards'] = $shards;

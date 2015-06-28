@@ -1,6 +1,8 @@
 <?php namespace Elasticquent;
 
-class ElasticquentResultCollection extends \Illuminate\Database\Eloquent\Collection
+use Illuminate\Database\Eloquent\Collection;
+
+class ElasticquentResultCollection extends Collection
 {
     protected $took;
     protected $timed_out;
@@ -38,7 +40,7 @@ class ElasticquentResultCollection extends \Illuminate\Database\Eloquent\Collect
      */
     private function hitsToItems($instance)
     {
-        $items = array();
+        $items = [];
 
         foreach ($this->hits['hits'] as $hit) {
 
